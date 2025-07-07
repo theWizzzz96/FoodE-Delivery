@@ -1,20 +1,21 @@
 package com.FoodDelivery.service;
 
 import com.FoodDelivery.SysUserDomain;
-import com.FoodDelivery.entities.SysUserEntity;
 import com.FoodDelivery.enitities.SysUserRepository;
+import com.FoodDelivery.entities.SysUserEntity;
 import com.FoodDelivery.mapper.SysUserMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SysUserService {
     private final SysUserRepository sysUserRepository;
     private static SysUserMapper mapper;
 
-    // ✅ Constructor injection — best practice in Spring
     public SysUserService(SysUserRepository sysUserRepository) {
         this.sysUserRepository = sysUserRepository;
     }
@@ -40,7 +41,7 @@ public class SysUserService {
     }
 
     @Transactional()
-    public SysUserEntity findByUsername(String username) {
-        return sysUserRepository.findByUsername(username); // ✅ custom query
+    public List<SysUserDomain> findAll() {
+        return sysUserRepository.findAll().stream().map(SysUserMapper::toUserDomain).collect(Collectors.toList()); // ✅ custom query
     }
 }
