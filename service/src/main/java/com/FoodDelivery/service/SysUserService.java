@@ -3,6 +3,7 @@ package com.FoodDelivery.service;
 import com.FoodDelivery.SysUserDomain;
 import com.FoodDelivery.enitities.SysUserRepository;
 import com.FoodDelivery.entities.SysUserEntity;
+import com.FoodDelivery.mapper.DomainToEntityUserMapper;
 import com.FoodDelivery.mapper.SysUserMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -22,12 +23,14 @@ public class SysUserService {
 
     @Transactional()
     public Optional<SysUserDomain> findUserById(Integer id) {
-        return sysUserRepository.findById(id).map(SysUserMapper::toUserDomain); // ✅ calling repository method
+        return sysUserRepository.findById(id).map(SysUserMapper::toUserDomain);
     }
 
     @Transactional
-    public SysUserEntity createUser(SysUserEntity user) {
-        return sysUserRepository.save(user); // ✅ calling save()
+    public SysUserEntity createUser(SysUserDomain user) {
+        SysUserEntity entity = DomainToEntityUserMapper.toEntityMapper(user);
+
+        return sysUserRepository.save(entity);
     }
 
     @Transactional
